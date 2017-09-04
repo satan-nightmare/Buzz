@@ -25,8 +25,26 @@ public class Server {
 
     }
     private static Connection getDatabaseConnection() throws Exception{
-        Class.forName("java.sql.DriverManager");
-        Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/BuzzServer","root","");
-        return con;
+            Connection conn = null;
+            try {
+                // db parameters
+                String url = "jdbc:sqlite:./Databases/BuzzServer.db";
+                // create a connection to the database
+                conn = DriverManager.getConnection(url);
+
+                System.out.println("Connection to SQLite has been established.");
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            return conn;
     }
 }
