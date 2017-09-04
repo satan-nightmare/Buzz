@@ -14,7 +14,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ListView fx:id="list" layoutX="-27.0" layoutY="103.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ListView fx:id="peopleListView" layoutX="-27.0" layoutY="103.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -26,7 +26,7 @@
                   </Label>
                   <TextField layoutX="193.0" layoutY="445.0" prefHeight="35.0" promptText="Enter message" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="120.0" />
                   <Button layoutX="456.0" layoutY="438.0" maxWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Send" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="35.0" />
-                  <ListView fx:id="messagelist" layoutX="143.0" layoutY="121.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
+                  <ListView fx:id="messageListView" layoutX="143.0" layoutY="121.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
                </children></AnchorPane>
         </items>
       </SplitPane>
