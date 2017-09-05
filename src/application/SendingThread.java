@@ -18,6 +18,7 @@ public class SendingThread implements Runnable {
     public void run() {
         try {
             serverOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
