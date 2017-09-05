@@ -35,17 +35,37 @@ public class LocalDB {
         }
     }
 
+    private ResultSet DBquery(String query){
+        Statement stmt=null;
+        try {
+            stmt=conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Local database error:\n"+query);
+            return null;
+        }
+    }
+
+    private void DBupdate(String query){
+        Statement stmt=null;
+        try {
+            stmt=conn.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Local database error:\n"+query);
+        }
+    }
+
     // Method to fetch all messages from local DB and update the messages Observable list
 
-    public void setAllMessages(People user) throws SQLException {
-        Statement stmt=null;
-        stmt=conn.createStatement();
-        System.out.println(user.userName);
-        // select all messages where either sender or receiver is current user
-        String query="select * from Messages where sender='"+user.userName+"' or receiver='"+user.userName+"';";
-        ResultSet rs = stmt.executeQuery(query);
-        controller.messageList.clear();
+    public void updateAllMessages(People user) throws SQLException {
         int c=0;
+        String query="select * from Messages where sender='"+user.userName+"' or receiver='"+user.userName+"';";
+        ResultSet rs = DBquery(query);
+        controller.messageList.clear();
         while(rs.next()){
             c++;
             Date date=null;
@@ -65,13 +85,19 @@ public class LocalDB {
     // Method to fetch all users from local DB and update the users Observable list
 
     public void setUsers() throws SQLException {
-        Statement stmt=null;
-        stmt=conn.createStatement();
+        /*Statement stmt=null;
+        stmt=conn.createStatement();*/
         String query="select * from Users";
-        ResultSet rs = stmt.executeQuery(query);
+        ResultSet rs = DBquery(query);
         while(rs.next()){
             controller.peopleList.add(new People(rs.getString("name"),rs.getString("username"),rs.getString("email")));
         }
+    }
+
+    public void sendMessage(People receiver,String message) throws SQLException {
+        String query="insert into Messages values('"+Main.user.userName+"','"+receiver.userName+"','"+message+"',datetime())";
+        DBupdate(query);
+        updateAllMessages(receiver);
     }
 
 }
