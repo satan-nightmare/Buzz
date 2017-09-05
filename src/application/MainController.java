@@ -2,19 +2,28 @@ package application;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import java.sql.SQLException;
 
 public class MainController {
 
     @FXML
     private ListView<People> peopleListView;
-    public ObservableList<People> peopleList;
-    public ObservableList<Message> messageList;
     @FXML
     private ListView<Message> messageListView;
-    private String currentUser;
+    @FXML
+    private TextField sendInput;
+    @FXML
+    private Button sendButton;
+
+    public ObservableList<People> peopleList;
+    public ObservableList<Message> messageList;
+
+    private People currentlyOpenUser;
     private LocalDB db;
 
     @FXML
@@ -31,7 +40,8 @@ public class MainController {
         peopleListView.setOnMouseClicked(mouseEvent -> {
             System.out.println("Button Clicked");
             try {
-                db.setAllMessages(peopleListView.getSelectionModel().getSelectedItem());
+                currentlyOpenUser=peopleListView.getSelectionModel().getSelectedItem();
+                db.updateAllMessages(peopleListView.getSelectionModel().getSelectedItem());
             } catch (SQLException e) {
                 System.out.println("Local Database Error");
                 e.printStackTrace();
@@ -44,5 +54,16 @@ public class MainController {
         messageListView.setCellFactory(messageListView -> new MessageListViewCell());
     }
 
+    @FXML
+    public void send(ActionEvent event){
+        if(sendInput.getText().equals(""))
+            return;
+        try {
+            db.sendMessage(currentlyOpenUser,sendInput.getText());
+        } catch (SQLException e) {
+            System.out.println("ResultSet error in send");
+            e.printStackTrace();
+        }
+    }
 
 }
