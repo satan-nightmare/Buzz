@@ -24,6 +24,7 @@ public class Server {
 
 
     }
+    // Method for getting Connection object ...
     private static Connection getDatabaseConnection() throws Exception{
             Connection conn = null;
             try {
