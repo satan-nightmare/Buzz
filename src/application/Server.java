@@ -5,8 +5,15 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class Server {
+
+    private static Map <Socket,String> map;
+
+    public Server(){
+
+    }
 
     public static void  main(String args[]) throws Exception{
 
@@ -24,6 +31,7 @@ public class Server {
 
 
     }
+    // Method for getting Connection object ...
     private static Connection getDatabaseConnection() throws Exception{
             Connection conn = null;
             try {
