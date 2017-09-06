@@ -17,15 +17,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-//        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/main.fxml"));
-//        primaryStage.setTitle("Buzz");
-//        primaryStage.setScene(new Scene(root));
-//        primaryStage.show();
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/main.fxml"));
         primaryStage.setTitle("Buzz");
-        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+//        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
+//        primaryStage.setTitle("Buzz");
+//        primaryStage.setResizable(false);
+//        primaryStage.setScene(new Scene(root));
+//        primaryStage.show();
 
     }
 
