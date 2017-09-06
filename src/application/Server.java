@@ -26,8 +26,6 @@ public class Server {
 //            Thread send = new Thread(sendingThread);
 //            send.start();
         }
-
-
     }
     private static Connection getDatabaseConnection() throws Exception{
             Connection conn = null;
