@@ -21,6 +21,11 @@ public class Main extends Application {
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+//        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
+//        primaryStage.setTitle("Buzz");
+//        primaryStage.setResizable(false);
+//        primaryStage.setScene(new Scene(root));
+//        primaryStage.show();
 
     }
 
