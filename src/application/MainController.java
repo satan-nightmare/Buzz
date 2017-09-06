@@ -25,6 +25,7 @@ public class MainController {
 
     private People currentlyOpenUser;
     private LocalDB db;
+    private Main main;
 
     @FXML
     public void initialize() {
@@ -64,6 +65,11 @@ public class MainController {
             System.out.println("ResultSet error in send");
             e.printStackTrace();
         }
+    }
+
+    public void setMain(Main main){
+        this.main=main;
+        db.setMain(main);
     }
 
 }

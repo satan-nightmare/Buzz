@@ -17,11 +17,12 @@ public class ReceivingThread implements Runnable {
     public void run() {
         try {
             serverInputStream = new ObjectInputStream(clientSocket.getInputStream());
-            while (true){//reads any input from the client till apocalypse
+            while (true){   //reads any input from the client till apocalypse
 
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        (Packet)serverInputStream.readObject();
     }
 }

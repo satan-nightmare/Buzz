@@ -6,19 +6,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /*
-    Class to handle all the local database queries
-    Current DB: sqlite
-*/
+ *  Class to handle all the local database queries
+ *  Current DB: sqlite
+ */
 
 public class LocalDB {
 
     private Connection conn;
     private MainController controller;
+    private Main main;
 
     public LocalDB(MainController controller){
         // Set MainController reference
         this.controller=controller;
+        this.main=main;
         connect();
+    }
+
+    public void setMain(Main main){
+        this.main=main;
     }
 
     public void connect() {
@@ -98,6 +104,9 @@ public class LocalDB {
         String query="insert into Messages values('"+Main.user.userName+"','"+receiver.userName+"','"+message+"',datetime())";
         DBupdate(query);
         updateAllMessages(receiver);
+        if(main.isConnected){
+            Packet
+        }
     }
 
 }
