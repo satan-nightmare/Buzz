@@ -18,7 +18,7 @@ public class ReceivingThread implements Runnable {
         try {
             serverInputStream = new ObjectInputStream(clientSocket.getInputStream());
             while (true){//reads any input from the client till apocalypse
-                Packet p = serverInputStream.readObject();
+                Packet p = (Packet) serverInputStream.readObject();
                 if(p.operation=="login"){
 
                 }
@@ -34,6 +34,6 @@ public class ReceivingThread implements Runnable {
     public boolean login(Packet p){
         String username = p.string1;
         String password = p.string2;
-
+        return true;
     }
 }
