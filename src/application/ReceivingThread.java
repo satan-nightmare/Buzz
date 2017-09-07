@@ -17,6 +17,7 @@ public class ReceivingThread implements Runnable {
     public void run() {
         try {
             serverInputStream = new ObjectInputStream(clientSocket.getInputStream());
+
             while (true){//reads any input from the client till apocalypse
                 Packet p = (Packet) serverInputStream.readObject();
                 if(p.operation=="login"){
