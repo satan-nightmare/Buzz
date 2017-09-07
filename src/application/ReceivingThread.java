@@ -16,30 +16,44 @@ public class ReceivingThread implements Runnable {
     private Socket clientSocket;
     private Connection conn;
     private ObjectInputStream serverInputStream;
+    private ObjectOutputStream objectOutputStream;
     private LocalDB db;
     public ReceivingThread(Socket clientSocket, Connection conn,LocalDB db){
         this.clientSocket=clientSocket;
         this.conn=conn;
         this.db=db;
     }
+
+    public ReceivingThread(Socket clientSocket, Connection conn,LocalDB db,ObjectOutputStream objectOutputStream){
+        this.clientSocket=clientSocket;
+        this.conn=conn;
+        this.db=db;
+        this.objectOutputStream=objectOutputStream;
+    }
+
+
+
     @Override
     public void run() {
         try {
+            if(clientSocket==null)
+                System.out.println("Maa ki");
             serverInputStream = new ObjectInputStream(clientSocket.getInputStream());
             while (true){   //reads any input from the client till apocalypse
                 Packet p = (Packet)serverInputStream.readObject();
                 System.out.println("Packet received");
                 if(p.operation.equals("login")){
-
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                    //ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
-                }
-                if(p.operation.equals("send")){
+                }else if(p.operation.equals("send")){
                     System.out.println("Send packet received "+p.list.get(0).receiver);
                     p.list.get(0);
+                    System.out.println(p.list.get(0).text);
                     p.operation="receive";
                     if(Server.socketMap.get(p.list.get(0).receiver)!=null) {
                         SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.list.get(0).receiver), p);
+                        Thread t=new Thread(sendingThread);
+                        t.start();
                         System.out.println("Message sent");
                     }else{
                         Statement stmt= null;
@@ -57,8 +71,8 @@ public class ReceivingThread implements Runnable {
                             e.printStackTrace();
                         }
                     }
-                }
-                if(p.operation=="receive"){
+                }else if(p.operation=="receive"){
+                    System.out.println("Message received"+p.list.get(0).text);
                     db.receiveMessage(p.list.get(0));
                 }
             }

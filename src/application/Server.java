@@ -22,7 +22,7 @@ public class Server {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             System.out.println("Client connected");
             //socketMap.put(clientSocket,null);
-            ReceivingThread receivingThread=new ReceivingThread(clientSocket,con,null);
+            ReceivingThread receivingThread=new ReceivingThread(clientSocket,con,null,objectOutputStream);
             Thread receive = new Thread(receivingThread);
             receive.start();
 //            SendingThread sendingThread=new SendingThread(clientSocket,con);

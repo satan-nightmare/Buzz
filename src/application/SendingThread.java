@@ -17,6 +17,8 @@ public class SendingThread implements Runnable {
     @Override
     public void run() {
         try {
+            if(objectOutputStream==null)
+                System.out.println("Maa ki");
             objectOutputStream.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();

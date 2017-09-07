@@ -39,6 +39,9 @@ public class Main extends Application {
         primaryStage.show();
         if(connection("localhost")) {
             isConnected=true;
+            ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
+            Thread t = new Thread(receivingThread);
+            t.start();
             System.out.println("Connection Established");
         }
 //        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
@@ -78,10 +81,11 @@ public class Main extends Application {
             System.out.println("Debug");
             Thread thread = new Thread(receivingThread);
             thread.start();*/
-        }catch (Exception e){
+        }catch (Exception e) {
             System.out.println("fuck3");
             return false;
         }
+
         Packet packet = new Packet();
         packet.operation="login";
         packet.string1=user.userName;
