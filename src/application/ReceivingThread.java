@@ -29,7 +29,8 @@ public class ReceivingThread implements Runnable {
             while (true){   //reads any input from the client till apocalypse
                 Packet p = (Packet)serverInputStream.readObject();
                 System.out.println("Packet received");
-                if(p.operation=="login"){
+                if(p.operation.equals("login")){
+
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
                 }
@@ -48,7 +49,7 @@ public class ReceivingThread implements Runnable {
                             e.printStackTrace();
                         }
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String query="insert into Messages values('"+p.list.get(0).sender+"','"+p.list.get(0).receiver+"','"+p.list.get(0).text+"','"+df.format(p.list.get(0).date)+")";
+                        String query="insert into Messages (sender,receiver,message,time) values('"+p.list.get(0).sender+"','"+p.list.get(0).receiver+"','"+p.list.get(0).text+"','"+df.format(p.list.get(0).date)+")";
                         try {
                             stmt.executeUpdate(query);
                         } catch (SQLException e) {

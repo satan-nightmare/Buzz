@@ -82,6 +82,12 @@ public class Main extends Application {
             System.out.println("fuck3");
             return false;
         }
+        Packet packet = new Packet();
+        packet.operation="login";
+        packet.string1=user.userName;
+        SendingThread sendingThread = new SendingThread(objectOutputStream,packet);
+        Thread t = new Thread(sendingThread);
+        t.start();
         return true;
     }
 
