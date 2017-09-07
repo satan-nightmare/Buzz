@@ -33,7 +33,7 @@ public class ReceivingThread implements Runnable {
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
                 }
-                if(p.operation=="send"){
+                if(p.operation.equals("send")){
                     System.out.println("Send packet received "+p.list.get(0).receiver);
                     p.list.get(0);
                     p.operation="receive";
