@@ -37,7 +37,7 @@ public class Main extends Application {
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        if(connection("localhost")) {
+        if(connection("192.168.31.253")) {
             isConnected=true;
             System.out.println("Connection Established");
         }
@@ -50,7 +50,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        user=new People("Sumit","sumit","");
+        user=new People("Anubhav","anubhav","");
         launch(args);
     }
 
