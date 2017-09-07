@@ -5,24 +5,26 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Server {
-
-    Map<String,Socket> socketMap;
+    public static Map<Socket,String> socketMap;
 
     public static void  main(String args[]) throws Exception{
 
+        socketMap=new HashMap<Socket,String>();
         ServerSocket serverSocket = new ServerSocket(7777);
         Connection con = getDatabaseConnection();
         while (true) {
             Socket clientSocket = serverSocket.accept();
+            socketMap.put(clientSocket,null);
             ReceivingThread receivingThread=new ReceivingThread(clientSocket,con);
-            SendingThread sendingThread=new SendingThread(clientSocket,con);
             Thread receive = new Thread(receivingThread);
-            Thread send = new Thread(sendingThread);
             receive.start();
-            send.start();
+//            SendingThread sendingThread=new SendingThread(clientSocket,con);
+//            Thread send = new Thread(sendingThread);
+//            send.start();
         }
 
 
