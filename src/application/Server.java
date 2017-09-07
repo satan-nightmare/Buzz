@@ -20,7 +20,7 @@ public class Server {
         while (true) {
             Socket clientSocket = serverSocket.accept();
             //socketMap.put(clientSocket,null);
-            ReceivingThread receivingThread=new ReceivingThread(clientSocket,con);
+            ReceivingThread receivingThread=new ReceivingThread(clientSocket,con,null);
             Thread receive = new Thread(receivingThread);
             receive.start();
 //            SendingThread sendingThread=new SendingThread(clientSocket,con);

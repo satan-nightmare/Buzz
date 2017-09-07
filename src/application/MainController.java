@@ -24,7 +24,7 @@ public class MainController {
     public ObservableList<Message> messageList;
 
     private People currentlyOpenUser;
-    private LocalDB db;
+    public LocalDB db;
     private Main main;
 
     @FXML

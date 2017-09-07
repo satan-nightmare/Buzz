@@ -16,9 +16,11 @@ public class ReceivingThread implements Runnable {
     private Socket clientSocket;
     private Connection conn;
     private ObjectInputStream serverInputStream;
-    public ReceivingThread(Socket clientSocket, Connection conn){
+    private LocalDB db;
+    public ReceivingThread(Socket clientSocket, Connection conn,LocalDB db){
         this.clientSocket=clientSocket;
         this.conn=conn;
+        this.db=db;
     }
     @Override
     public void run() {
@@ -53,7 +55,7 @@ public class ReceivingThread implements Runnable {
                     }
                 }
                 if(p.operation=="receive"){
-
+                    db.receiveMessage(p.list.get(0));
                 }
             }
         } catch (IOException e) {

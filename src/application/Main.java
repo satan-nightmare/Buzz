@@ -1,5 +1,6 @@
 package application;
 
+import com.sun.org.apache.regexp.internal.RE;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +28,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         isConnected=false;
 
+        if(connection("localhost")) {
+            isConnected=true;
+            System.out.println("Connection Established");
+        }
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
         Parent root = (Parent)fxmlLoader.load();
         mainController=fxmlLoader.<MainController>getController();
@@ -35,10 +41,6 @@ public class Main extends Application {
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        if(connection("localhost")) {
-            isConnected=true;
-            System.out.println("Connection Established");
-        }
 //        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
 //        primaryStage.setTitle("Buzz");
 //        primaryStage.setResizable(false);
@@ -68,6 +70,9 @@ public class Main extends Application {
         }
         try {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
+            ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
+            Thread thread = new Thread(receivingThread);
+            thread.start();
         }catch (Exception e){
             System.out.println("fuck3");
             return false;
