@@ -34,10 +34,12 @@ public class ReceivingThread implements Runnable {
                     Server.socketMap.put(p.string1,objectOutputStream);
                 }
                 if(p.operation=="send"){
+                    System.out.println("Send packet received "+p.list.get(0).receiver);
                     p.list.get(0);
                     p.operation="receive";
-                    if(Server.socketMap.get(p.string2)!=null) {
-                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
+                    if(Server.socketMap.get(p.list.get(0).receiver)!=null) {
+                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.list.get(0).receiver), p);
+                        System.out.println("Message sent");
                     }else{
                         Statement stmt= null;
                         try {
