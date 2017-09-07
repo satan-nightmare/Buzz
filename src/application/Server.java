@@ -19,6 +19,8 @@ public class Server {
         Connection con = getDatabaseConnection();
         while (true) {
             Socket clientSocket = serverSocket.accept();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            System.out.println("Client connected");
             //socketMap.put(clientSocket,null);
             ReceivingThread receivingThread=new ReceivingThread(clientSocket,con,null);
             Thread receive = new Thread(receivingThread);

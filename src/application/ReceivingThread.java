@@ -28,6 +28,7 @@ public class ReceivingThread implements Runnable {
             serverInputStream = new ObjectInputStream(clientSocket.getInputStream());
             while (true){   //reads any input from the client till apocalypse
                 Packet p = (Packet)serverInputStream.readObject();
+                System.out.println("Packet received");
                 if(p.operation=="login"){
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);

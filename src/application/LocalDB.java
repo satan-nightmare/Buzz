@@ -102,6 +102,7 @@ public class LocalDB {
 
     public void sendMessage(People receiver,String text) throws SQLException {
         Message message = new Message(text,Main.user.userName,receiver.userName,new Date());
+        System.out.println(message);
         storeMessage(message);
         updateAllMessages(receiver);
         if(main.isConnected){

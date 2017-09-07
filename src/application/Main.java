@@ -28,19 +28,19 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         isConnected=false;
 
-        if(connection("localhost")) {
-            isConnected=true;
-            System.out.println("Connection Established");
-        }
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
         Parent root = (Parent)fxmlLoader.load();
         mainController=fxmlLoader.<MainController>getController();
         mainController.setMain(this);
+
         //Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/main.fxml"));
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        if(connection("localhost")) {
+            isConnected=true;
+            System.out.println("Connection Established");
+        }
 //        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
 //        primaryStage.setTitle("Buzz");
 //        primaryStage.setResizable(false);
@@ -56,23 +56,28 @@ public class Main extends Application {
 
     public boolean connection(String ip){
         try {
-            socket=new Socket(ip,12345);
+            socket=new Socket(ip,7777);
         } catch (Exception e){
             System.out.println("fuck1");
             return false;
         }
-
         try {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         }catch (Exception e){
             System.out.println("fuck2");
             return false;
         }
+        System.out.println("Debug2");
         try {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
-            ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
+
+            //if(mainController==null)
+                System.out.println("Debug1");
+
+            /*ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
+            System.out.println("Debug");
             Thread thread = new Thread(receivingThread);
-            thread.start();
+            thread.start();*/
         }catch (Exception e){
             System.out.println("fuck3");
             return false;
