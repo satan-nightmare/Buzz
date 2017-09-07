@@ -7,17 +7,17 @@ import java.net.Socket;
 import java.sql.Connection;
 
 public class SendingThread implements Runnable {
-    private Socket clientSocket;
-    private Connection conn;
-    private ObjectOutputStream serverOutputStream;
-    public SendingThread(Socket clientSocket, Connection conn){
-        this.clientSocket=clientSocket;
-        this.conn=conn;
+    private Packet packet;
+    private ObjectOutputStream objectOutputStream;
+    public SendingThread(ObjectOutputStream objectOutputStream, Packet packet){
+        this.objectOutputStream=objectOutputStream;
+        this.packet=packet;
     }
+
     @Override
     public void run() {
         try {
-            serverOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            objectOutputStream.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }

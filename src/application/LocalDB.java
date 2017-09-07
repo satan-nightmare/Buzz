@@ -100,13 +100,28 @@ public class LocalDB {
         }
     }
 
-    public void sendMessage(People receiver,String message) throws SQLException {
-        String query="insert into Messages values('"+Main.user.userName+"','"+receiver.userName+"','"+message+"',datetime())";
-        DBupdate(query);
+    public void sendMessage(People receiver,String text) throws SQLException {
+        Message message = new Message(text,Main.user.userName,receiver.userName,new Date());
+        storeMessage(message);
         updateAllMessages(receiver);
         if(main.isConnected){
-            Packet
+            Packet packet = new Packet();
+            packet.operation="send";
+            packet.list.add(message);
+            SendingThread sendingThread = new SendingThread(main.objectOutputStream,packet);
+            Thread t=new Thread(sendingThread);
+            t.start();
         }
+    }
+
+    public void receiveMessage(Message message){
+        storeMessage(message);
+        //updateAllMessages(message.sender);
+    }
+
+    public void storeMessage(Message message){
+        String query="insert into Messages values('"+message.sender+"','"+message.receiver+"','"+message.text+"',datetime())";
+        DBupdate(query);
     }
 
 }

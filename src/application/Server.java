@@ -1,5 +1,6 @@
 package application;
 
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -9,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Server {
-    public static Map<Socket,String> socketMap;
+    public static Map<String,ObjectOutputStream> socketMap;
 
     public static void  main(String args[]) throws Exception{
 
-        socketMap=new HashMap<Socket,String>();
+        socketMap= new HashMap<>();
         ServerSocket serverSocket = new ServerSocket(7777);
         Connection con = getDatabaseConnection();
         while (true) {
