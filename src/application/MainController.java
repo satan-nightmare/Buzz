@@ -23,7 +23,7 @@ public class MainController {
     public ObservableList<People> peopleList;
     public ObservableList<Message> messageList;
 
-    private People currentlyOpenUser;
+    public People currentlyOpenUser;
     public LocalDB db;
     private Main main;
 
