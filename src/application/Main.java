@@ -35,7 +35,7 @@ public class Main extends Application {
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        if(connection("localhost")) {
+        if(connection("192.168.31.253")) {
             isConnected=true;
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
             Thread t = new Thread(receivingThread);
@@ -51,8 +51,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        user=new People("Sumit","sumit","");
-        //user=new People("Anubhav","anubhav","");
+        //user=new People("Sumit","sumit","");
+        user=new People("Anubhav","anubhav","");
         launch(args);
     }
 
