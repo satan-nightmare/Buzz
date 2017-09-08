@@ -1,5 +1,7 @@
 package application;
 
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -81,7 +83,11 @@ public class ReceivingThread implements Runnable {
 
                 }else if(p.operation.equals("receive")){
 
-                    db.receiveMessage(p.list.get(0));
+                    Platform.runLater(()->{
+                        db.receiveMessage(p.list.get(0));
+                    });
+
+                    //db.receiveMessage(p.list.get(0));
 
                 }
             }
