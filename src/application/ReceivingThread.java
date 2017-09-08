@@ -21,10 +21,11 @@ public class ReceivingThread implements Runnable {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private LocalDB db;
-    public ReceivingThread(Socket clientSocket, Connection conn,LocalDB db){
+    private MainController controller;
+    public ReceivingThread(Socket clientSocket, Connection conn,MainController controller){
         this.clientSocket=clientSocket;
         this.conn=conn;
-        this.db=db;
+        this.controller=controller;
         try {
             objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
@@ -100,7 +101,7 @@ public class ReceivingThread implements Runnable {
                     for(int i=0;i<p.list.size();++i) {
                         final int temp=i;
                         Platform.runLater(() -> {
-                            db.receiveMessage(p.list.get(temp));
+                            controller.receiveMessage(p.list.get(temp));
                         });
                     }
                 }

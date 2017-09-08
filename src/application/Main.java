@@ -37,7 +37,7 @@ public class Main extends Application {
         primaryStage.show();
         if(connection("localhost")) {
             isConnected=true;
-            ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
+            ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController);
             Thread t = new Thread(receivingThread);
             t.start();
             System.out.println("Connection to sever established");

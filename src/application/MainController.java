@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class MainController {
 
@@ -42,7 +43,7 @@ public class MainController {
             System.out.println("Button Clicked");
             try {
                 currentlyOpenUser=peopleListView.getSelectionModel().getSelectedItem();
-                db.updateAllMessages(peopleListView.getSelectionModel().getSelectedItem());
+                db.updateAllMessages(peopleListView.getSelectionModel().getSelectedItem(),messageList);
             } catch (SQLException e) {
                 System.out.println("Local Database Error");
                 e.printStackTrace();
@@ -60,11 +61,26 @@ public class MainController {
         if(sendInput.getText().equals(""))
             return;
         try {
-            db.sendMessage(currentlyOpenUser,sendInput.getText());
+            Message message = new Message(sendInput.getText(),Main.user.userName,currentlyOpenUser.userName,new Date());
+            db.sendMessage(message);
+            sendInput.setText("");
+            messageList.clear();
+            db.updateAllMessages(currentlyOpenUser,messageList);
         } catch (SQLException e) {
             System.out.println("ResultSet error in send");
             e.printStackTrace();
         }
+    }
+
+    public void receiveMessage(Message message){
+        db.storeMessage(message);
+        if(message.sender.equals(currentlyOpenUser.userName))
+            try {
+                db.updateAllMessages(currentlyOpenUser,messageList);
+            } catch (SQLException e) {
+                System.out.println("SQL error while updating message list");
+                e.printStackTrace();
+            }
     }
 
     public void setMain(Main main){
