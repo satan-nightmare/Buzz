@@ -83,7 +83,7 @@ public class ReceivingThread implements Runnable {
 
                 }else if(p.operation.equals("receive")){
 
-                    Platform.runLater(()->{  db.receiveMessage(p.list.get(0)); });
+                    Platform.runLater(()->{ db.receiveMessage(p.list.get(0)); });
 
                 }
             }
