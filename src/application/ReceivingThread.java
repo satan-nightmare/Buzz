@@ -70,6 +70,7 @@ public class ReceivingThread implements Runnable {
                         Message message = new Message(rs.getString("message"),rs.getString("sender"),rs.getString("receiver"),df.parse(testDate));
                         query = "Delete from Messages where messageID = '"+rs.getInt("messageID")+"'";
                         stmt.executeUpdate(query);
+                       // System.out.println(count);
                         p.list.add(message);
                     }
                     SendingThread sendingThread = new SendingThread(objectOutputStream,p);
