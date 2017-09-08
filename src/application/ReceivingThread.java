@@ -68,6 +68,8 @@ public class ReceivingThread implements Runnable {
                         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String testDate="2017-09-08 13:00:14";
                         Message message = new Message(rs.getString("message"),rs.getString("sender"),rs.getString("receiver"),df.parse(testDate));
+                        query = "Delete from Messages where messageID = '"+rs.getInt("messageID")+"'";
+                        stmt.executeUpdate(query);
                         p.list.add(message);
                     }
                     SendingThread sendingThread = new SendingThread(objectOutputStream,p);
