@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -21,19 +22,16 @@ public class Main extends Application {
     public Socket socket;
     public ObjectInputStream objectInputStream;
     public ObjectOutputStream objectOutputStream;
-    public boolean isConnected;
-    private MainController mainController;
+    public boolean isConnected;             //Is the user connected to server
+    private MainController mainController;  //Holds reference to mainController instance
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         isConnected=false;
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
         Parent root = (Parent)fxmlLoader.load();
         mainController=fxmlLoader.<MainController>getController();
-        mainController.setMain(this);
-
-        //Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/main.fxml"));
+        mainController.setMain(this);   //Set Main class reference in mainController class
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -42,7 +40,7 @@ public class Main extends Application {
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
             Thread t = new Thread(receivingThread);
             t.start();
-            System.out.println("Connection Established");
+            System.out.println("Connection to sever established");
         }
 //        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
 //        primaryStage.setTitle("Buzz");
@@ -54,38 +52,14 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         user=new People("Sumit","sumit","");
+        //user=new People("Anubhav","anubhav","");
         launch(args);
     }
 
-    public boolean connection(String ip){
-        try {
-            socket=new Socket(ip,7777);
-        } catch (Exception e){
-            System.out.println("fuck1");
-            return false;
-        }
-        try {
-            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        }catch (Exception e){
-            System.out.println("fuck2");
-            return false;
-        }
-        System.out.println("Debug2");
-        try {
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
-
-            //if(mainController==null)
-                System.out.println("Debug1");
-
-            /*ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
-            System.out.println("Debug");
-            Thread thread = new Thread(receivingThread);
-            thread.start();*/
-        }catch (Exception e) {
-            System.out.println("fuck3");
-            return false;
-        }
-
+    public boolean connection(String ip) throws IOException {
+        socket=new Socket(ip,7777);
+        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        objectInputStream = new ObjectInputStream(socket.getInputStream());
         Packet packet = new Packet();
         packet.operation="login";
         packet.string1=user.userName;

@@ -1,5 +1,6 @@
 package application;
 
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,8 +22,7 @@ public class Server {
             Socket clientSocket = serverSocket.accept();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             System.out.println("Client connected");
-            //socketMap.put(clientSocket,null);
-            ReceivingThread receivingThread=new ReceivingThread(clientSocket,con,null,objectOutputStream);
+            ReceivingThread receivingThread=new ReceivingThread(clientSocket,con,objectOutputStream);
             Thread receive = new Thread(receivingThread);
             receive.start();
 //            SendingThread sendingThread=new SendingThread(clientSocket,con);

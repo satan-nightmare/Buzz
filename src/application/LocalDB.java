@@ -117,6 +117,11 @@ public class LocalDB {
 
     public void receiveMessage(Message message){
         storeMessage(message);
+        try {
+            updateAllMessages(controller.currentlyOpenUser);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         //updateAllMessages(message.sender);
     }
 
