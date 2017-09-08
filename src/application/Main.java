@@ -35,7 +35,7 @@ public class Main extends Application {
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        if(connection("192.168.31.253")) {
+        if(connection("192.168.31.125")) {
             isConnected=true;
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController.db);
             Thread t = new Thread(receivingThread);
