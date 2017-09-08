@@ -73,7 +73,7 @@ public class LocalDB {
     public void updateAllMessages(People user, ObservableList<Message> messageList) throws SQLException {
         String query="select * from Messages where sender='"+user.userName+"' or receiver='"+user.userName+"';";
         ResultSet rs = DBquery(query);
-        //controller.messageList.clear();
+        messageList.clear();
         while(rs.next()){
             Date date=null;
             // Need to parse sqlite time to Java Date object

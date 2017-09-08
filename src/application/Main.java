@@ -25,21 +25,32 @@ public class Main extends Application {
     private MainController mainController;  //Holds reference to mainController instance
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage){
         isConnected=false;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
-        Parent root = fxmlLoader.load();
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            System.out.println("Unable to load fxml file");
+            e.printStackTrace();
+        }
         mainController=fxmlLoader.<MainController>getController();
         mainController.setMain(this);   //Set Main class reference in mainController class
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        if(connection("localhost")) {
+        //if(connection("localhost")) {
+        try{
+            connection("localhost");
             isConnected=true;
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController);
             Thread t = new Thread(receivingThread);
             t.start();
             System.out.println("Connection to sever established");
+        }catch (IOException e) {
+            System.out.println("Connection error");
+            //e.printStackTrace();
         }
 //        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
 //        primaryStage.setTitle("Buzz");
