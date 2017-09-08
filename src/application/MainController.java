@@ -7,6 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -70,6 +73,12 @@ public class MainController {
             System.out.println("ResultSet error in send");
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void pressedEnter(KeyEvent keyEvent){
+        if(keyEvent.getCode()== KeyCode.ENTER)
+            send(null);
     }
 
     public void receiveMessage(Message message){
