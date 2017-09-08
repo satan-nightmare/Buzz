@@ -1,5 +1,7 @@
 package application;
 
+import javafx.application.Platform;
+
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
