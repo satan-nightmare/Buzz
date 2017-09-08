@@ -52,7 +52,8 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         user=new People("Sumit","sumit","");
-        //user=new People("Anubhav","anubhav","");
+        //user=new People("Garvit","garvit","");
+        //user=new People("Anubahv","anubhav","");
         launch(args);
     }
 
