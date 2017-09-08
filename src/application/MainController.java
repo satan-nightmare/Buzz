@@ -34,6 +34,7 @@ public class MainController {
     @FXML
     public void initialize() {
         System.out.println("Initialize");
+        currentlyOpenUser=null;
         db=new LocalDB(this);
         peopleList= FXCollections.observableArrayList();
         try {
@@ -83,7 +84,7 @@ public class MainController {
 
     public void receiveMessage(Message message){
         db.storeMessage(message);
-        if(message.sender.equals(currentlyOpenUser.userName))
+        if(currentlyOpenUser!=null && message.sender.equals(currentlyOpenUser.userName))
             try {
                 db.updateAllMessages(currentlyOpenUser,messageList);
             } catch (SQLException e) {
