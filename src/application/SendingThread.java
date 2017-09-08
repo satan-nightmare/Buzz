@@ -20,6 +20,7 @@ public class SendingThread implements Runnable {
             if(objectOutputStream==null)
                 System.out.println("Maa ki");
             objectOutputStream.writeObject(packet);
+            objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

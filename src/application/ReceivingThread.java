@@ -38,12 +38,16 @@ public class ReceivingThread implements Runnable {
         try {
             if(clientSocket==null)
                 System.out.println("Maa ki");
+            System.out.println("Before");
             serverInputStream = new ObjectInputStream(clientSocket.getInputStream());
+            System.out.println("After");
             while (true){   //reads any input from the client till apocalypse
                 Packet p = (Packet)serverInputStream.readObject();
                 System.out.println("Packet received");
+
                 if(p.operation.equals("login")){
-                    //ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                    //objectOutputStream=new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
                 }else if(p.operation.equals("send")){
                     System.out.println("Send packet received "+p.list.get(0).receiver);
@@ -71,7 +75,7 @@ public class ReceivingThread implements Runnable {
                             e.printStackTrace();
                         }
                     }
-                }else if(p.operation=="receive"){
+                }else if(p.operation.equals("receive")){
                     System.out.println("Message received"+p.list.get(0).text);
                     db.receiveMessage(p.list.get(0));
                 }
