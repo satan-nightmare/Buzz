@@ -110,6 +110,7 @@ public class LocalDB {
             SendingThread sendingThread = new SendingThread(main.objectOutputStream,packet);
             Thread t=new Thread(sendingThread);
             t.start();
+            System.out.println("Messege sent");
         }
     }
 

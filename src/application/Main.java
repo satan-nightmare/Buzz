@@ -18,7 +18,6 @@ import java.sql.SQLException;
 public class Main extends Application {
 
     public static People user;  //Current User
-    private Connection conn;
     public Socket socket;
     public ObjectInputStream objectInputStream;
     public ObjectOutputStream objectOutputStream;
@@ -29,13 +28,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         isConnected=false;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
-        Parent root = (Parent)fxmlLoader.load();
+        Parent root = fxmlLoader.load();
         mainController=fxmlLoader.<MainController>getController();
         mainController.setMain(this);   //Set Main class reference in mainController class
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-        if(connection("192.168.31.253")) {
+        if(connection("localhost")) {
             isConnected=true;
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController);
             Thread t = new Thread(receivingThread);
@@ -51,9 +50,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        //user=new People("Sumit","sumit","");
+        user=new People("Sumit","sumit","");
         //user=new People("Garvit","garvit","");
-        user=new People("Anubahv","anubhav","");
+        //user=new People("Anubahv","anubhav","");
         launch(args);
     }
 
