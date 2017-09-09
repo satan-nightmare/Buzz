@@ -88,6 +88,14 @@ public class MainController {
 
     public void receiveMessage(Message message){
         db.storeMessage(message);
+        if(!message.sender.equals(currentlyOpenUser.userName)){
+            for(People p:peopleList){
+                if(p.userName.equals(message.sender)){
+                    p.counter++;
+                    break;
+                }
+            }
+        }
         if(currentlyOpenUser!=null && message.sender.equals(currentlyOpenUser.userName))
             try {
                 db.updateAllMessages(currentlyOpenUser,messageList);

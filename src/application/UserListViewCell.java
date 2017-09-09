@@ -45,17 +45,18 @@ public class UserListViewCell extends ListCell<People> {
                 }
 
             }
-            //text.setStyle("-fx-border-radius: 5px");
-            //date.setStyle("-fx-border-radius: 5px");
             name.setText(user.name);
-            counter.setText("5");
+            if(user.counter>0)
+                counter.setText(Integer.toString(user.counter));
+            else
+                counter.setText("");
             Image image = new Image("file:src/resources/images/profilerec.jpg");
             circle.setFill(new ImagePattern(image));
 
             if(user.isActive)
-                circle.setStroke(Color.GREEN);
+                circle.setStroke(Color.LIGHTGREEN);
             else
-                circle.setStroke(Color.RED);
+                circle.setStroke(Color.LIGHTGRAY);
 
             setText(null);
             setGraphic(body);
