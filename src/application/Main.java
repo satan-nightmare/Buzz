@@ -60,6 +60,24 @@ public class Main extends Application {
 
     }
 
+    @Override
+    public void stop(){
+        System.out.println("Stop invoked");
+        Packet packet = new Packet();
+        packet.operation="logout";
+        packet.string1=Main.user.userName;
+        SendingThread sendingThread = new SendingThread(objectOutputStream,packet);
+        //Thread t=new Thread(sendingThread);
+        //t.start();
+        sendingThread.run();
+        System.out.println("Sent");
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         user=new People("Sumit","sumit","");
         //user=new People("Garvit","garvit","");

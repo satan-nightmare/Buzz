@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 public class MainController {
 
@@ -96,9 +97,18 @@ public class MainController {
             }
     }
 
+    public void updateStatus(List<People> list){
+        peopleList.clear();
+        peopleList.addAll(list);
+    }
+
     public void setMain(Main main){
         this.main=main;
         db.setMain(main);
+        //Has to do it in here because main is null before this
+        OnlineStatusThread onlineStatusThread = new OnlineStatusThread(this,main);
+        Thread t = new Thread(onlineStatusThread);
+        t.start();
     }
 
 }

@@ -52,7 +52,9 @@ public class UserListViewCell extends ListCell<People> {
             Image image = new Image("file:src/resources/images/profilerec.jpg");
             circle.setFill(new ImagePattern(image));
 
-            if(user.userName.equals("anubhav"))
+            if(user.isActive)
+                circle.setStroke(Color.GREEN);
+            else
                 circle.setStroke(Color.RED);
 
             setText(null);
