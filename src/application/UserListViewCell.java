@@ -50,6 +50,7 @@ public class UserListViewCell extends ListCell<People> {
                 counter.setText(Integer.toString(user.counter));
             else
                 counter.setText("");
+            // Here is profile picture path
             Image image = new Image("file:src/resources/images/profilerec.jpg");
             circle.setFill(new ImagePattern(image));
 

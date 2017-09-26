@@ -1,6 +1,5 @@
 package application;
 
-import com.sun.org.apache.regexp.internal.RE;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,11 +10,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Main extends Application {
+
 
     public static People user;  //Current User
     public Socket socket;
