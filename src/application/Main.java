@@ -7,9 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,6 +34,10 @@ public class Main extends Application {
         primaryStage.show();
         if(connection("localhost")) {
             isConnected=true;
+
+            //added by me
+            getFiles();
+
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController);
             Thread t = new Thread(receivingThread);
             t.start();
@@ -54,6 +56,25 @@ public class Main extends Application {
         //user=new People("Garvit","garvit","");
         //user=new People("Anubahv","anubhav","");
         launch(args);
+    }
+
+    //Method to receive file from client to server.........
+    private void getFiles() throws IOException, ClassNotFoundException {
+
+        String current1 = new java.io.File( "." ).getCanonicalPath();
+        System.out.println("Current dir:"+current1);
+        FileOutputStream fileoutputstream = new FileOutputStream("src/resources/clientImage/Computer_Organization_and_Design_4th_Ed.pdf");
+        BufferedOutputStream bufferedoutputstream = new BufferedOutputStream(fileoutputstream);
+        System.out.println("File received");
+        int bytesRead;
+        bytesRead = (int)objectInputStream.readObject();
+        byte [] bytearray = (byte[])objectInputStream.readObject();
+        System.out.println("first"+bytesRead);
+
+        bufferedoutputstream.write(bytearray,0,bytesRead);
+        bufferedoutputstream.flush();
+        fileoutputstream.close();
+        bufferedoutputstream.close();
     }
 
     public boolean connection(String ip) throws IOException {

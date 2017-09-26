@@ -2,9 +2,7 @@ package application;
 
 import javafx.application.Platform;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.sql.*;
 import java.text.DateFormat;
@@ -12,6 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+
+import static java.lang.Thread.sleep;
 
 //this class also conatins server database methods
 
@@ -55,6 +55,9 @@ public class ReceivingThread implements Runnable {
                 Packet p = (Packet)objectInputStream.readObject();
                 System.out.println("Packet received");
                 if(p.operation.equals("login")){
+
+                    // added by me
+                    sendFiles();
 
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
@@ -119,5 +122,24 @@ public class ReceivingThread implements Runnable {
             e.printStackTrace();
         }
     }
+
+  // Method to send file from server to client......
+  private void sendFiles() throws IOException {
+
+      File file = new File ("src/resources/serverImage/Computer_Organization_and_Design_4th_Ed.pdf");
+      byte [] bytearray = new byte [(int)file.length()];
+     // ObjectOutputStream objectoutputstream=null;
+      FileInputStream fileinputstream = new FileInputStream(file);
+      BufferedInputStream bufferedinputstream = new BufferedInputStream(fileinputstream);
+      int noofBytes = bufferedinputstream.read(bytearray,0,bytearray.length);
+      System.out.println(noofBytes);
+      System.out.println("Sending file");
+      objectOutputStream.writeObject(noofBytes);
+      objectOutputStream.flush();
+      objectOutputStream.writeObject(bytearray);
+      System.out.println("File sent");
+      objectOutputStream.flush();
+      //outputstream.close();
+  }
 
 }
