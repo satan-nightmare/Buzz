@@ -46,6 +46,7 @@ public class Main extends Application {
             isConnected=true;
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController);
             Thread t = new Thread(receivingThread);
+            t.setDaemon(true);
             t.start();
             System.out.println("Connection to sever established");
         }catch (IOException e) {

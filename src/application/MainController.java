@@ -116,6 +116,7 @@ public class MainController {
         //Has to do it in here because main is null before this
         OnlineStatusThread onlineStatusThread = new OnlineStatusThread(this,main);
         Thread t = new Thread(onlineStatusThread);
+        t.setDaemon(true);
         t.start();
     }
 

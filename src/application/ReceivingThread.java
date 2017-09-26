@@ -22,6 +22,7 @@ public class ReceivingThread implements Runnable {
     private ObjectOutputStream objectOutputStream;
     private LocalDB db;
     private MainController controller;
+    private String user;
     public ReceivingThread(Socket clientSocket, Connection conn,MainController controller){
         this.clientSocket=clientSocket;
         this.conn=conn;
@@ -55,7 +56,7 @@ public class ReceivingThread implements Runnable {
                 Packet p = (Packet)objectInputStream.readObject();
                 System.out.println("Packet received");
                 if(p.operation.equals("login")){
-
+                    user=p.string1;
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
 
@@ -134,12 +135,28 @@ public class ReceivingThread implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            Server.socketMap.remove(user);
+            Statement stmt = null;
+            try {
+                stmt = conn.createStatement();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            String query = "update User set isActive=0 where username='"+user+"'";
+            try {
+                stmt.executeUpdate(query);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } catch (ClassNotFoundException e) {
+            System.out.println("fuck");
             e.printStackTrace();
         } catch (SQLException e) {
+            System.out.println("fuck1");
             e.printStackTrace();
         } catch (ParseException e) {
+            System.out.println("fuck2");
             e.printStackTrace();
         }
     }
