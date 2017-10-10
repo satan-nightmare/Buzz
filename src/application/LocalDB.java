@@ -1,6 +1,5 @@
 package application;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 
 import java.sql.*;

@@ -1,7 +1,6 @@
 package application;
 
 import javafx.application.Platform;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +9,6 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
 
 //this class also conatins server database methods
@@ -131,6 +129,25 @@ public class ReceivingThread implements Runnable {
                 }else if(p.operation.equals("onlineresponse")){
                     Platform.runLater(()->{
                         controller.updateStatus(p.peopleList);
+                    });
+                }else if(p.operation.equals("searchQuery")){
+                    Statement stmt = null;
+                    try {
+                        stmt = conn.createStatement();
+                        String query="SELECT * FROM User WHERE userName LIKE '"+p.string1+"%' OR firstName LIKE '"+p.string1+"%'";
+                        ResultSet rs = stmt.executeQuery(query);
+                        p.operation="searchResults";
+                        while(rs.next())
+                            p.peopleList.add(new People(rs.getString("firstName")+" "+rs.getString("lastName"),rs.getString("userName"),""));
+                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
+                        Thread t=new Thread(sendingThread);
+                        t.start();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }else if(p.operation.equals("searchResults")){
+                    Platform.runLater(() -> {
+                        controller.setSearchResults(p);
                     });
                 }
             }
