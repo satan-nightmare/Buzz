@@ -34,6 +34,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        sendButton.setStyle("-fx-padding: 10%");
         System.out.println("Initialize");
         currentlyOpenUser=null;
         db=new LocalDB(this);
@@ -114,9 +115,13 @@ public class MainController {
         this.main=main;
         db.setMain(main);
         //Has to do it in here because main is null before this
-        OnlineStatusThread onlineStatusThread = new OnlineStatusThread(this,main);
-        Thread t = new Thread(onlineStatusThread);
-        t.start();
+        if(main.isConnected) {
+            System.out.println("Check");
+            OnlineStatusThread onlineStatusThread = new OnlineStatusThread(this, main);
+            Thread t = new Thread(onlineStatusThread);
+            t.setDaemon(true);
+            t.start();
+        }
     }
 
 }

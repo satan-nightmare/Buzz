@@ -15,5 +15,4 @@ public class Packet implements Serializable{
       list=new ArrayList<>();
       peopleList=new ArrayList<>();
    }
-
 }
