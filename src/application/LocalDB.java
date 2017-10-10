@@ -97,7 +97,6 @@ public class LocalDB {
         String query="select * from Users";
         ResultSet rs = DBquery(query);
         while(rs.next()){
-
             controller.peopleList.add(new People(rs.getString("name"),rs.getString("username"),rs.getString("email")));
         }
     }
