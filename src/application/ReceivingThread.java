@@ -1,17 +1,15 @@
 package application;
 
 import javafx.application.Platform;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
-
-import static java.lang.Thread.sleep;
 
 //this class also conatins server database methods
 
@@ -22,6 +20,7 @@ public class ReceivingThread implements Runnable {
     private ObjectOutputStream objectOutputStream;
     private LocalDB db;
     private MainController controller;
+    private String user;
     public ReceivingThread(Socket clientSocket, Connection conn,MainController controller){
         this.clientSocket=clientSocket;
         this.conn=conn;
@@ -55,10 +54,7 @@ public class ReceivingThread implements Runnable {
                 Packet p = (Packet)objectInputStream.readObject();
                 System.out.println("Packet received");
                 if(p.operation.equals("login")){
-
-                    // added by me
-                    sendFiles();
-
+                    user=p.string1;
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
                     Server.socketMap.put(p.string1,objectOutputStream);
 
@@ -131,39 +127,53 @@ public class ReceivingThread implements Runnable {
                     Thread t=new Thread(sendingThread);
                     t.start();
                 }else if(p.operation.equals("onlineresponse")){
-                    Platform.runLater(()->{
-                        controller.updateStatus(p.peopleList);
+                    Platform.runLater(()->{ controller.updateStatus(p.peopleList);});
+                }else if(p.operation.equals("searchQuery")){
+                    Statement stmt = null;
+                    try {
+                        stmt = conn.createStatement();
+                        String query="SELECT * FROM User WHERE userName LIKE '"+p.string1+"%' OR firstName LIKE '"+p.string1+"%'";
+                        ResultSet rs = stmt.executeQuery(query);
+                        p.operation="searchResults";
+                        while(rs.next())
+                            p.peopleList.add(new People(rs.getString("firstName")+" "+rs.getString("lastName"),rs.getString("userName"),""));
+                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
+                        Thread t=new Thread(sendingThread);
+                        t.start();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }else if(p.operation.equals("searchResults")){
+                    Platform.runLater(() -> {
+                        controller.setSearchResults(p);
                     });
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            Server.socketMap.remove(user);
+            Statement stmt = null;
+            try {
+                stmt = conn.createStatement();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            String query = "update User set isActive=0 where username='"+user+"'";
+            try {
+                stmt.executeUpdate(query);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } catch (ClassNotFoundException e) {
+            System.out.println("fuck");
             e.printStackTrace();
         } catch (SQLException e) {
+            System.out.println("fuck1");
             e.printStackTrace();
         } catch (ParseException e) {
+            System.out.println("fuck2");
             e.printStackTrace();
         }
     }
-
-  // Method to send file from server to client......
-  private void sendFiles() throws IOException {
-
-      File file = new File ("src/resources/serverImage/Computer_Organization_and_Design_4th_Ed.pdf");
-      byte [] bytearray = new byte [(int)file.length()];
-     // ObjectOutputStream objectoutputstream=null;
-      FileInputStream fileinputstream = new FileInputStream(file);
-      BufferedInputStream bufferedinputstream = new BufferedInputStream(fileinputstream);
-      int noofBytes = bufferedinputstream.read(bytearray,0,bytearray.length);
-      System.out.println(noofBytes);
-      System.out.println("Sending file");
-      objectOutputStream.writeObject(noofBytes);
-      objectOutputStream.flush();
-      objectOutputStream.writeObject(bytearray);
-      System.out.println("File sent");
-      objectOutputStream.flush();
-      //outputstream.close();
-  }
 
 }

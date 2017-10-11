@@ -1,34 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<AnchorPane prefHeight="500.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
-      <SplitPane dividerPositions="0.36215538847117795" layoutX="84.0" layoutY="75.0" prefHeight="500.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <ListView fx:id="peopleListView" layoutX="-27.0" layoutY="103.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <Label fx:id="temp" layoutX="228.0" layoutY="300.0" prefHeight="20.0" prefWidth="100.0">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="sendInput" layoutX="193.0" layoutY="445.0" onKeyPressed="#pressedEnter" prefHeight="35.0" promptText="Enter message" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="120.0" />
-                  <Button fx:id="sendButton" layoutX="456.0" layoutY="438.0" maxWidth="100.0" mnemonicParsing="false" onAction="#send" prefHeight="35.0" text="Send" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="35.0" />
-                  <ListView fx:id="messageListView" layoutX="143.0" layoutY="121.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
-               </children></AnchorPane>
-        </items>
-      </SplitPane>
+      <HBox fx:id="topHbox" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="nameLabel" text="Sumit Singh" textFill="#415bc4">
+               <font>
+                  <Font size="23.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </Label>
+            <Button mnemonicParsing="false" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ef2f21; -fx-background-radius: 100;" text="5" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+            </Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <TextField fx:id="searchField" onAction="#getSearchResults" onMouseClicked="#openSearchList" prefWidth="200.0" promptText="Search" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="inviteButton" mnemonicParsing="false" text="Invite">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#openCreateGroupPane" text="Create Group">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <SplitPane fx:id="splitPane" dividerPositions="0.36215538847117795" prefHeight="500.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <ListView fx:id="peopleListView" layoutX="-27.0" layoutY="103.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="temp" layoutX="228.0" layoutY="300.0" prefHeight="20.0" prefWidth="100.0">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="sendInput" layoutX="193.0" layoutY="445.0" onKeyPressed="#pressedEnter" prefHeight="35.0" promptText="Enter message" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="120.0" />
+                        <Button fx:id="sendButton" layoutX="456.0" layoutY="438.0" maxWidth="100.0" mnemonicParsing="false" onAction="#send" prefHeight="35.0" prefWidth="60.0" text="Send" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="35.0" />
+                        <ListView fx:id="messageListView" layoutX="143.0" layoutY="121.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <ListView fx:id="searchListView" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeSearchList" text="Close" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="createGroupPane" prefHeight="130.0" prefWidth="300.0" visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Label fx:id="groupNotificationLabel" text="You are offline" textFill="#dd4141" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="groupNameField" promptText="Group Name" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="44.0" />
+            <Button layoutX="122.8" layoutY="56.4" mnemonicParsing="false" onAction="#createGroup" style="-fx-background-radius: 0;" text="Create Group" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="50.0" />
+            <Button mnemonicParsing="false" onAction="#closeCreateGroupPane" style="-fx-background-radius: 0;" text="Cancel" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="50.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
