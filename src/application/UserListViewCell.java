@@ -46,10 +46,11 @@ public class UserListViewCell extends ListCell<People> {
 
             }
             name.setText(user.name);
-            if(user.counter>0)
+            if(user.counter>0) {
                 counter.setText(Integer.toString(user.counter));
-            else
-                counter.setText("");
+                counter.setVisible(true);
+            }else
+                counter.setVisible(false);
             // Here is profile picture path
             Image image = new Image("file:src/resources/images/profilerec.jpg");
             circle.setFill(new ImagePattern(image));
@@ -58,7 +59,9 @@ public class UserListViewCell extends ListCell<People> {
                 circle.setStroke(Color.LIGHTGREEN);
             else
                 circle.setStroke(Color.LIGHTGRAY);
-
+            circle.setOnMouseClicked(mouseEvent ->{
+                MainController.controller.openProfilePage(user);
+            });
             setText(null);
             setGraphic(body);
         }

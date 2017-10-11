@@ -8,6 +8,7 @@ public class People implements Serializable{
     public String email;
     public boolean isActive;
     public int counter;
+    public String status;
 
     public People(String name,String userName,String email){
         this.name=name;

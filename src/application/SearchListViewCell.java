@@ -19,6 +19,8 @@ public class SearchListViewCell extends ListCell<People>{
     private Button inviteButton;
     @FXML
     private HBox body;
+    @FXML
+    private Button viewButton;
 
     @Override
     protected void updateItem(People user, boolean empty){
@@ -38,10 +40,12 @@ public class SearchListViewCell extends ListCell<People>{
                 }
 
             }
-            System.out.println("FUCK");
             nameLabel.setText(user.name+" - "+user.userName);
-            if(!(user instanceof Group))
+            if(user instanceof Group || !MainController.isGroupSelected)
                 inviteButton.setVisible(false);
+            viewButton.setOnMouseClicked(mouseEvent ->{
+                MainController.controller.openProfilePage(user);
+            });
             setText(null);
             setGraphic(body);
         }

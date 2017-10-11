@@ -14,7 +14,7 @@ public class OnlineStatusThread implements Runnable{
     public void run() {
         while(true) {
             try {
-                Thread.currentThread().sleep(4000);
+                Thread.currentThread().sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
