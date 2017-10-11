@@ -127,9 +127,7 @@ public class ReceivingThread implements Runnable {
                     Thread t=new Thread(sendingThread);
                     t.start();
                 }else if(p.operation.equals("onlineresponse")){
-                    Platform.runLater(()->{
-                        controller.updateStatus(p.peopleList);
-                    });
+                    Platform.runLater(()->{ controller.updateStatus(p.peopleList);});
                 }else if(p.operation.equals("searchQuery")){
                     Statement stmt = null;
                     try {

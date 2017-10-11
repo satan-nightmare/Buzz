@@ -9,12 +9,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox fx:id="topHbox" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="nameLabel" text="Sumit Singh" textFill="#415bc4">
                <font>
@@ -24,7 +23,14 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Label>
-            <Circle fill="#38cd71" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Button mnemonicParsing="false" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ef2f21; -fx-background-radius: 100;" text="5" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+            </Button>
             <Region HBox.hgrow="ALWAYS" />
             <TextField fx:id="searchField" onAction="#getSearchResults" onMouseClicked="#openSearchList" prefWidth="200.0" promptText="Search" />
             <Region HBox.hgrow="ALWAYS" />
@@ -33,7 +39,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Create Group">
+            <Button mnemonicParsing="false" onAction="#openCreateGroupPane" text="Create Group">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
@@ -65,6 +71,18 @@
             </SplitPane>
             <ListView fx:id="searchListView" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="0.0" />
             <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeSearchList" text="Close" visible="false" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="createGroupPane" prefHeight="130.0" prefWidth="300.0" visible="false" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <Label fx:id="groupNotificationLabel" text="You are offline" textFill="#dd4141" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="groupNameField" promptText="Group Name" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="44.0" />
+            <Button layoutX="122.8" layoutY="56.4" mnemonicParsing="false" onAction="#createGroup" style="-fx-background-radius: 0;" text="Create Group" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="50.0" />
+            <Button mnemonicParsing="false" onAction="#closeCreateGroupPane" style="-fx-background-radius: 0;" text="Cancel" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="50.0" />
          </children>
       </AnchorPane>
    </children>
