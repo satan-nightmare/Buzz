@@ -8,6 +8,7 @@ public class Packet implements Serializable{
    public String string1=null;
    public String string2=null;
    public String string3=null;
+   public boolean flag;
    public List <Message> list;
    public List <People> peopleList;
 

@@ -83,7 +83,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         //user=new People("Sumit","sumit","");
         //user=new People("Garvit","garvit","");
-        user=new People("Anubhav","anubhav","",true);
+        user=new People("Anubhav","anubhav","",false);
         launch(args);
     }
 
