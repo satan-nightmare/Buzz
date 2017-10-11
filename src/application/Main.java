@@ -23,7 +23,7 @@ public class Main extends Application {
     private MainController mainController;  //Holds reference to mainController instance
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) throws ClassNotFoundException {
         isConnected=false;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
         Parent root = null;
@@ -81,9 +81,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        user=new People("Sumit","sumit","");
+        //user=new People("Sumit","sumit","");
         //user=new People("Garvit","garvit","");
-        //user=new People("Anubahv","anubhav","");
+        user=new People("Anubhav","anubhav","",true);
         launch(args);
     }
 

@@ -50,7 +50,12 @@ public class UserListViewCell extends ListCell<People> {
                 counter.setText(Integer.toString(user.counter));
             else
                 counter.setText("");
-            Image image = new Image("file:src/resources/images/profilerec.jpg");
+            Image image;
+            //System.out.println("this user: "+user.userName);
+            if(user.isSetProfile)
+                 image = new Image("file:src/resources/images/profilepics/"+user.userName+".jpg");
+            else
+                 image = new Image("file:src/resources/images/profilepics/default.jpg");
             circle.setFill(new ImagePattern(image));
 
             if(user.isActive)
