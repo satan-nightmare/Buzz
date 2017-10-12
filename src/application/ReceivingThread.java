@@ -64,7 +64,11 @@ public class ReceivingThread implements Runnable {
                     ResultSet rs = stmt.executeQuery(query);
                     while(rs.next()){
                         Date date=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("time"));  //Parse the sate to string
-                        Message message = new Message(rs.getString("message"),rs.getString("sender"),rs.getString("receiver"),date);
+                        Message message;
+                        if(rs.getString("groupname") != null)
+                             message = new Message(rs.getString("message"),rs.getString("sender"),rs.getString("groupname"),date);
+                        else
+                             message = new Message(rs.getString("message"),rs.getString("sender"),rs.getString("receiver"),date);
                         p.list.add(message);
                     }
 
@@ -79,24 +83,53 @@ public class ReceivingThread implements Runnable {
                     stmt.executeUpdate(query);
 
                 }else if(p.operation.equals("send")){
-
-                    p.operation="receive";
-                    if(Server.socketMap.get(p.list.get(0).receiver)!=null) {
-                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.list.get(0).receiver), p);
-                        Thread t=new Thread(sendingThread);
-                        t.start();
-                        System.out.println("User online message sent");
-                    }else{
-                        Statement stmt = null;
-                        try {
-                            stmt = conn.createStatement();
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String query="insert into Messages (sender,receiver,message,time) values('"+p.list.get(0).sender+"','"+p.list.get(0).receiver+"','"+p.list.get(0).text+"','"+df.format(p.list.get(0).date)+"')";
-                        System.out.println(query);
-                            stmt.executeUpdate(query);
-                        } catch (SQLException e) {
-                            System.out.println("Cannot store message to database");
-                            e.printStackTrace();
+                    Statement stmt = null;
+                    stmt = conn.createStatement();
+                    String query;
+                    query = "Select * from User where username ='"+p.list.get(0).receiver+"' and isGroup=1";
+                    ResultSet rs = stmt.executeQuery(query);
+                    p.operation = "receive";
+                    if(rs.next()) {
+                        query = "Select * from '" + p.list.get(0).receiver + "'";
+                        ResultSet rs2 = stmt.executeQuery(query);
+                        while (rs2.next()) {
+                            String receiver = rs2.getString("username");
+                            int isAdmin = rs2.getInt("isAdmin");
+                            if (isAdmin != 1) {
+                                if (Server.socketMap.get(receiver) != null) {
+                                    SendingThread sendingThread = new SendingThread(Server.socketMap.get(receiver), p);
+                                    Thread t = new Thread(sendingThread);
+                                    t.start();
+                                    System.out.println("User online message sent");
+                                } else {
+                                    try {
+                                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        query = "insert into Messages (sender,receiver,message,time,groupname) values('" + p.list.get(0).sender + "','" + receiver + "','" + p.list.get(0).text + "','" + df.format(p.list.get(0).date) + "','"+p.list.get(0).receiver+"'";
+                                        System.out.println(query);
+                                        stmt.executeUpdate(query);
+                                    } catch (SQLException e) {
+                                        System.out.println("Cannot store message to database");
+                                        e.printStackTrace();
+                                     }   }
+                          }
+                       }
+                     }
+                    else {
+                        if (Server.socketMap.get(p.list.get(0).receiver) != null) {
+                            SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.list.get(0).receiver), p);
+                            Thread t = new Thread(sendingThread);
+                            t.start();
+                            System.out.println("User online message sent");
+                        } else {
+                            try {
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                query = "insert into Messages (sender,receiver,message,time) values('" + p.list.get(0).sender + "','" + p.list.get(0).receiver + "','" + p.list.get(0).text + "','" + df.format(p.list.get(0).date) + "')";
+                                System.out.println(query);
+                                stmt.executeUpdate(query);
+                            } catch (SQLException e) {
+                                System.out.println("Cannot store message to database");
+                                e.printStackTrace();
+                            }
                         }
                     }
 
@@ -131,13 +164,12 @@ public class ReceivingThread implements Runnable {
                 }else if(p.operation.equals("searchQuery")){
                     Statement stmt = null;
                     try {
-                        //System.out.println("Search: "+p.string1);
                         stmt = conn.createStatement();
                         String query="SELECT * FROM User WHERE userName LIKE '"+p.string1+"%' OR name LIKE '"+p.string1+"%'";
                         ResultSet rs = stmt.executeQuery(query);
                         p.operation="searchResults";
                         while(rs.next())
-                            p.peopleList.add(new People(rs.getString("name"),rs.getString("userName"),rs.getString("email"),rs.getBoolean("isSetProfilePic")));
+                            p.peopleList.add(new People(rs.getString("name"),rs.getString("userName"),"",rs.getBoolean("isSetProfilePic")));
                         SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
                         Thread t=new Thread(sendingThread);
                         t.start();
@@ -148,6 +180,29 @@ public class ReceivingThread implements Runnable {
                     Platform.runLater(() -> {
                         controller.setSearchResults(p);
                     });
+                }
+                else if(p.operation.equals("createGroupRequest")) {
+                    String query = "Select * from User where username='" + p.string1 + "' and isGroup=1";
+                    ResultSet rs;
+                    Statement stmt = conn.createStatement();
+                    rs = stmt.executeQuery(query);
+                    if (rs.next()) {
+                        p.operation = "createGroupResponse";
+                        p.flag = false;
+                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string1), p);
+                        Thread t = new Thread(sendingThread);
+                        t.start();
+                    } else {
+                        p.operation = "response";
+                        p.flag = true;
+                        createGroup(p.string1, p.string2, p.string1);
+                        SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
+                        Thread t = new Thread(sendingThread);
+                        t.start();
+                    }
+                }
+                else if(p.operation.equals("inviteGroup")){
+                      
                 }
             }
         } catch (IOException e) {
@@ -177,4 +232,13 @@ public class ReceivingThread implements Runnable {
         }
     }
 
+    public void createGroup(String username,String adminname,String groupname) throws SQLException {
+        Statement stmt = conn.createStatement();
+        String query = "Insert into User (username,name,isSetProfilePic,isGroup) values ('"+username+"','"+groupname+"',0,1)";
+        stmt.executeUpdate(query);
+        query = "Create table '"+username+"' (username,isAdmin)";
+        stmt.executeUpdate(query);
+        query = "insert into '"+username+"' values ('"+adminname+"',1)";
+        stmt.executeUpdate(query);
+    }
 }
