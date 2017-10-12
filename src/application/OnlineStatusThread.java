@@ -13,11 +13,6 @@ public class OnlineStatusThread implements Runnable{
     @Override
     public void run() {
         while(true) {
-            try {
-                Thread.currentThread().sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             Packet packet = new Packet();
             packet.operation="onlinerequest";
             packet.string1=Main.user.userName;
@@ -25,6 +20,11 @@ public class OnlineStatusThread implements Runnable{
             SendingThread sendingThread = new SendingThread(main.objectOutputStream,packet);
             Thread t = new Thread(sendingThread);
             t.start();
+            try {
+                Thread.currentThread().sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
