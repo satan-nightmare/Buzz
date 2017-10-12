@@ -52,7 +52,12 @@ public class UserListViewCell extends ListCell<People> {
             }else
                 counter.setVisible(false);
             // Here is profile picture path
-            Image image = new Image("file:src/resources/images/profilerec.jpg");
+            String path;
+            if(user.isSetProfile)
+                path="file:src/resources/images/profilepics/"+user.userName+".jpg";
+            else
+                path="file:src/resources/images/profilepics/default.jpg";
+            Image image = new Image(path);
             circle.setFill(new ImagePattern(image));
 
             if(user.isActive)

@@ -133,11 +133,11 @@ public class ReceivingThread implements Runnable {
                     try {
                         //System.out.println("Search: "+p.string1);
                         stmt = conn.createStatement();
-                        String query="SELECT * FROM User WHERE userName LIKE '"+p.string1+"%' OR firstName LIKE '"+p.string1+"%'";
+                        String query="SELECT * FROM User WHERE userName LIKE '"+p.string1+"%' OR name LIKE '"+p.string1+"%'";
                         ResultSet rs = stmt.executeQuery(query);
                         p.operation="searchResults";
                         while(rs.next())
-                            p.peopleList.add(new People(rs.getString("firstName")+" "+rs.getString("lastName"),rs.getString("userName"),rs.getString("email")));
+                            p.peopleList.add(new People(rs.getString("name"),rs.getString("userName"),rs.getString("email"),rs.getBoolean("isSetProfilePic")));
                         SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
                         Thread t=new Thread(sendingThread);
                         t.start();

@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -59,6 +61,8 @@ public class MainController {
     private Label profileStatusLabel;
     @FXML
     private VBox profilePane;
+    @FXML
+    private ImageView profileImageView;
 
     public ObservableList<People> peopleList;
     public ObservableList<Message> messageList;
@@ -280,6 +284,12 @@ public class MainController {
         blurMainPane();
         if(isSearchOpen)
             blurSearch();
+        String path;
+        if(user.isSetProfile)
+            path="file:src/resources/images/profilepics/"+user.userName+".jpg";
+        else
+            path="file:src/resources/images/profilepics/default.jpg";
+        profileImageView.setImage(new Image(path));
         profileNameLabel.setText(user.name);
         profileUsernameLabel.setText(user.userName);
         profileEmailLabel.setText(user.email);
