@@ -46,23 +46,22 @@ public class UserListViewCell extends ListCell<People> {
 
             }
             name.setText(user.name);
-            if(user.counter>0)
+            if(user.counter>0) {
                 counter.setText(Integer.toString(user.counter));
-            else
-                counter.setText("");
-            Image image;
-            //System.out.println("this user: "+user.userName);
-            if(user.isSetProfile)
-                 image = new Image("file:src/resources/images/profilepics/"+user.userName+".jpg");
-            else
-                 image = new Image("file:src/resources/images/profilepics/default.jpg");
+                counter.setVisible(true);
+            }else
+                counter.setVisible(false);
+            // Here is profile picture path
+            Image image = new Image("file:src/resources/images/profilerec.jpg");
             circle.setFill(new ImagePattern(image));
 
             if(user.isActive)
                 circle.setStroke(Color.LIGHTGREEN);
             else
                 circle.setStroke(Color.LIGHTGRAY);
-
+            circle.setOnMouseClicked(mouseEvent ->{
+                MainController.controller.openProfilePage(user);
+            });
             setText(null);
             setGraphic(body);
         }

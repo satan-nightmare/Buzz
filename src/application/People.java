@@ -9,6 +9,7 @@ public class People implements Serializable{
     public boolean isActive;
     public boolean isSetProfile;
     public int counter;
+    public String status;
 
     public People(String name,String userName,String email,boolean isSetProfile){
         this.name=name;

@@ -6,9 +6,12 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
@@ -23,7 +26,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ef2f21; -fx-background-radius: 100;" text="5" textFill="WHITE">
+            <Button fx:id="notificationCounter" mnemonicParsing="false" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ef2f21; -fx-background-radius: 100;" text="5" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -34,7 +37,7 @@
             <Region HBox.hgrow="ALWAYS" />
             <TextField fx:id="searchField" onAction="#getSearchResults" onMouseClicked="#openSearchList" prefWidth="200.0" promptText="Search" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="inviteButton" mnemonicParsing="false" text="Invite">
+            <Button fx:id="inviteButton" mnemonicParsing="false" onAction="#inviteSearch" text="Invite">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
@@ -50,12 +53,12 @@
          <children>
             <SplitPane fx:id="splitPane" dividerPositions="0.36215538847117795" prefHeight="500.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane maxWidth="260.0" minWidth="260.0" prefHeight="160.0" prefWidth="260.0">
                      <children>
                         <ListView fx:id="peopleListView" layoutX="-27.0" layoutY="103.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="0.0" minWidth="200.0" prefHeight="160.0">
                      <children>
                         <Label fx:id="temp" layoutX="228.0" layoutY="300.0" prefHeight="20.0" prefWidth="100.0">
                            <font>
@@ -85,5 +88,74 @@
             <Button mnemonicParsing="false" onAction="#closeCreateGroupPane" style="-fx-background-radius: 0;" text="Cancel" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="50.0" />
          </children>
       </AnchorPane>
+      <VBox fx:id="profilePane" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="TOP_RIGHT" prefHeight="50.0">
+               <children>
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#closeProfilePage" style="-fx-background-radius: 100;" text="X">
+                     <HBox.margin>
+                        <Insets right="70.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="profileImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/profilerec.jpg" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="40.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <VBox>
+                     <children>
+                        <Label fx:id="profileNameLabel" text="Sumit Singh" textFill="#090909">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="profileUsernameLabel" text="sumit">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="profileEmailLabel" text="sumitsinghsakhwar@gmail.com">
+                           <font>
+                              <Font name="Verdana" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label fx:id="profileStatusLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="450.0" text="This is my staus.This is my staus.This is my staus.This is my staus.This is my staus." textFill="#514d4d" wrapText="true">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <Button mnemonicParsing="false" text="Send Message">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

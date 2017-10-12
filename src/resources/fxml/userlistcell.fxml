@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="body" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="body" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Circle fx:id="circle" fill="DODGERBLUE" radius="22.0" stroke="#39b232" strokeType="INSIDE" strokeWidth="3.0">
          <HBox.margin>
@@ -21,10 +21,13 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="counter" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" text="5">
+      <Label fx:id="counter" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #e8122f; -fx-background-radius: 100;" text="5" textFill="#f0eaea">
          <HBox.margin>
             <Insets bottom="18.0" left="5.0" right="5.0" top="18.0" />
          </HBox.margin>
+         <font>
+            <Font name="System Bold" size="11.0" />
+         </font>
       </Label>
    </children>
 </HBox>

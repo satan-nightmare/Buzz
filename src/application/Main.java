@@ -1,19 +1,18 @@
 package application;
 
-import com.sun.org.apache.regexp.internal.RE;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Main extends Application {
+
 
     public static People user;  //Current User
     public Socket socket;
@@ -23,7 +22,7 @@ public class Main extends Application {
     private MainController mainController;  //Holds reference to mainController instance
 
     @Override
-    public void start(Stage primaryStage) throws ClassNotFoundException {
+    public void start(Stage primaryStage){
         isConnected=false;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../resources/fxml/main.fxml"));
         Parent root = null;
@@ -34,7 +33,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
         mainController=fxmlLoader.<MainController>getController();
-        mainController.setMain(this);   //Set Main class reference in mainController class
+        //mainController.setMain(this);   //Set Main class reference in mainController class
         primaryStage.setTitle("Buzz");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -42,18 +41,16 @@ public class Main extends Application {
         try{
             connection("localhost");
             isConnected=true;
-
-            //added by me
-            getFiles();
-
             ReceivingThread receivingThread = new ReceivingThread(socket,null,mainController);
             Thread t = new Thread(receivingThread);
+            t.setDaemon(true);
             t.start();
             System.out.println("Connection to sever established");
         }catch (IOException e) {
             System.out.println("Connection error");
             //e.printStackTrace();
         }
+        mainController.setMain(this);
 //        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/login.fxml"));
 //        primaryStage.setTitle("Buzz");
 //        primaryStage.setResizable(false);
@@ -65,45 +62,28 @@ public class Main extends Application {
     @Override
     public void stop(){
         System.out.println("Stop invoked");
-        Packet packet = new Packet();
-        packet.operation="logout";
-        packet.string1=Main.user.userName;
-        SendingThread sendingThread = new SendingThread(objectOutputStream,packet);
-        //Thread t=new Thread(sendingThread);
-        //t.start();
-        sendingThread.run();
-        System.out.println("Sent");
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(isConnected) {
+            Packet packet = new Packet();
+            packet.operation = "logout";
+            packet.string1 = Main.user.userName;
+            SendingThread sendingThread = new SendingThread(objectOutputStream, packet);
+            //Thread t=new Thread(sendingThread);
+            //t.start();
+            sendingThread.run();
+            System.out.println("Sent");
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static void main(String[] args) {
-        //user=new People("Sumit","sumit","");
+        user=new People("Sumit","sumit","sumitsinghsakhwar@gmail.com");
         //user=new People("Garvit","garvit","");
-        user=new People("Anubhav","anubhav","",false);
+        //user=new People("Anubhav","anubhav","");
         launch(args);
-    }
-
-    //Method to receive file from client to server.........
-    private void getFiles() throws IOException, ClassNotFoundException {
-
-        String current1 = new java.io.File( "." ).getCanonicalPath();
-        System.out.println("Current dir:"+current1);
-        FileOutputStream fileoutputstream = new FileOutputStream("src/resources/clientImage/Computer_Organization_and_Design_4th_Ed.pdf");
-        BufferedOutputStream bufferedoutputstream = new BufferedOutputStream(fileoutputstream);
-        System.out.println("File received");
-        int bytesRead;
-        bytesRead = (int)objectInputStream.readObject();
-        byte [] bytearray = (byte[])objectInputStream.readObject();
-        System.out.println("first"+bytesRead);
-
-        bufferedoutputstream.write(bytearray,0,bytesRead);
-        bufferedoutputstream.flush();
-        fileoutputstream.close();
-        bufferedoutputstream.close();
     }
 
     public boolean connection(String ip) throws IOException {

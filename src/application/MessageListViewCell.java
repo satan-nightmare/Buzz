@@ -19,6 +19,8 @@ public class MessageListViewCell extends ListCell<Message>{
     private VBox body;
     @FXML
     private FXMLLoader loader;
+    @FXML
+    private Label name;
 
     @Override
     protected void updateItem(Message message,boolean empty){
@@ -42,14 +44,17 @@ public class MessageListViewCell extends ListCell<Message>{
             }
             //text.setStyle("-fx-border-radius: 5px");
             //date.setStyle("-fx-border-radius: 5px");
+            name.setText(message.receiver);
             text.setText(message.text);
             date.setText(message.date.toString());
             if(message.sender.equals(Main.user.userName)) {  //If you sent the message
+                name.setStyle("-fx-border-color:lightblue; -fx-background-color: lightblue;");
                 text.setStyle("-fx-border-color:lightblue; -fx-background-color: lightblue;");
                 date.setStyle("-fx-border-color:lightblue; -fx-background-color: lightblue;");
                 //body.setAlignment(Pos.CENTER_RIGHT);
                 this.setAlignment(Pos.CENTER_RIGHT);
             }else{  //If you received the message
+                name.setStyle("-fx-border-color:lightgreen; -fx-background-color: lightgreen;");
                 text.setStyle("-fx-border-color:lightgreen; -fx-background-color: lightgreen;");
                 date.setStyle("-fx-border-color:lightgreen; -fx-background-color: lightgreen;");
                 //body.setAlignment(Pos.CENTER_RIGHT);

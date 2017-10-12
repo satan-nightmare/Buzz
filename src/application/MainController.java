@@ -6,17 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
-import java.beans.Visibility;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.Date;
@@ -50,18 +47,34 @@ public class MainController {
     private Label groupNotificationLabel;
     @FXML
     private TextField groupNameField;
+    @FXML
+    private Button notificationCounter;
+    @FXML
+    private Label profileNameLabel;
+    @FXML
+    private Label profileUsernameLabel;
+    @FXML
+    private Label profileEmailLabel;
+    @FXML
+    private Label profileStatusLabel;
+    @FXML
+    private VBox profilePane;
 
     public ObservableList<People> peopleList;
     public ObservableList<Message> messageList;
     public ObservableList<People> searchResultList;
 
+    public static MainController controller;
     public People currentlyOpenUser;
     public LocalDB db;
     private Main main;
     private boolean isSearchOpen;
+    public static boolean isGroupSelected;  // Used in SearchListViewCell class to get
+                                            // info if invite button is required.
 
     @FXML
     public void initialize() {
+        controller=this;
         byte[] emojiBytes = new byte[]{(byte)0xF0, (byte)0x9F, (byte)0x98, (byte)0x81};
         String emojiAsString = new String(emojiBytes, Charset.forName("UTF-8"));
         sendInput.setText(emojiAsString);
@@ -86,6 +99,7 @@ public class MainController {
             System.out.println("Button Clicked");
             try {
                 currentlyOpenUser=peopleListView.getSelectionModel().getSelectedItem();
+                currentlyOpenUser.counter=0;
                 System.out.println(peopleListView.getSelectionModel().getSelectedItem().userName);
                 db.updateAllMessages(peopleListView.getSelectionModel().getSelectedItem(),messageList);
             } catch (SQLException e) {
@@ -127,6 +141,7 @@ public class MainController {
 
     @FXML
     public void closeSearchList(){
+        isGroupSelected=false;  //Default value is false i.e search is used without invite
         isSearchOpen=false;
         searchListView.setVisible(false);
         closeButton.setVisible(false);
@@ -186,19 +201,14 @@ public class MainController {
         searchResultList.addAll(p.peopleList);
     }
 
-    @FXML
-    public void openCreateGroupPane(){
+    private void blurMainPane(){
         topHbox.setDisable(true);
         splitPane.setDisable(true);
         topHbox.setEffect(new GaussianBlur());
         splitPane.setEffect(new GaussianBlur());
-        createGroupPane.setVisible(true);
     }
 
-    @FXML
-    public void closeCreateGroupPane(){
-        groupNotificationLabel.setVisible(false);
-        createGroupPane.setVisible(false);
+    private void unblurMainPane(){
         topHbox.setEffect(null);
         splitPane.setEffect(null);
         topHbox.setDisable(false);
@@ -206,10 +216,34 @@ public class MainController {
     }
 
     @FXML
-    public void createGroup() {
+    private void openCreateGroupPane(){
+        blurMainPane();
+        if(isSearchOpen)
+            blurSearch();
+        createGroupPane.setVisible(true);
+    }
+
+    @FXML
+    private void closeCreateGroupPane(){
+        groupNotificationLabel.setVisible(false);
+        createGroupPane.setVisible(false);
+        unblurMainPane();
+        if(isSearchOpen)
+            unblurSearch();
+    }
+
+    @FXML
+    private void createGroup() {
         if(groupNameField.getText().equals("")){
             groupNotificationLabel.setText("That's not how it works  : /");
             groupNotificationLabel.setVisible(true);
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(5000));
+            fadeOut.setNode(groupNotificationLabel);
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.setCycleCount(1);
+            fadeOut.setAutoReverse(false);
+            fadeOut.playFromStart();
         }else {
             if (main.isConnected) {
                 Packet p = new Packet();
@@ -220,9 +254,52 @@ public class MainController {
                 Thread t = new Thread(sendingThread);
                 t.start();
             } else {
-                groupNotificationLabel.setText("You are currently online");
+                groupNotificationLabel.setText("You are currently offline");
                 groupNotificationLabel.setVisible(true);
+                groupNotificationLabel.setOpacity(1);
             }
+        }
+    }
+
+    private void blurSearch(){
+        searchListView.setDisable(true);
+        closeButton.setDisable(true);
+        searchListView.setEffect(new GaussianBlur());
+        closeButton.setEffect(new GaussianBlur());
+    }
+
+    private void unblurSearch(){
+        searchListView.setDisable(false);
+        closeButton.setDisable(false);
+        searchListView.setEffect(null);
+        closeButton.setEffect(null);
+    }
+
+    @FXML
+    public void openProfilePage(People user){
+        blurMainPane();
+        if(isSearchOpen)
+            blurSearch();
+        profileNameLabel.setText(user.name);
+        profileUsernameLabel.setText(user.userName);
+        profileEmailLabel.setText(user.email);
+        profileStatusLabel.setText(user.status);
+        profilePane.setVisible(true);
+    }
+
+    @FXML
+    private void closeProfilePage(){
+        profilePane.setVisible(false);
+        unblurMainPane();
+        if(isSearchOpen)
+            unblurSearch();
+    }
+
+    @FXML
+    public void inviteSearch(){
+        if(peopleListView.getSelectionModel().getSelectedItem() instanceof Group){
+            isGroupSelected=true;
+            openSearchList();
         }
     }
 
@@ -246,8 +323,12 @@ public class MainController {
     }
 
     public void updateStatus(List<People> list){
-        peopleList.clear();
-        peopleList.addAll(list);
+        //peopleList.clear();
+        //peopleList.addAll(list);
+        // Update people elements
+        for(int i=0;i<list.size();i++){
+            peopleList.set(i,list.get(i));
+        }
     }
 
     public void setMain(Main main){
