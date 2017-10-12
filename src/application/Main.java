@@ -80,7 +80,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        user=new People("Sumit","sumit","sumitsinghsakhwar@gmail.com");
+        user=new People("Sumit","sumit","sumitsinghsakhwar@gmail.com",false);
         //user=new People("Garvit","garvit","");
         //user=new People("Anubhav","anubhav","");
         launch(args);
