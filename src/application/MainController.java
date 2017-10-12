@@ -313,6 +313,14 @@ public class MainController {
         }
     }
 
+    public void createGroupResponse(Packet p){
+        if(p.flag){
+            groupNotificationLabel.setText("Group created successfully");
+
+        }else
+            groupNotificationLabel.setText("Group name already exist");
+    }
+
     public void receiveMessage(Message message){
         db.storeMessage(message);
         if(!message.sender.equals(currentlyOpenUser.userName)){

@@ -112,6 +112,18 @@ public class LocalDB {
         }
     }
 
+    public void addUser(People user){
+        if(user instanceof Group){
+            String query = "Insert into User (username,name,isSetProfilePic,isGroup) values ('"+user.userName+"','"+user.name+"',0,1)";
+            DBupdate(query);
+            query = "Create table '"+user.userName+"' (username,isAdmin)";
+            DBupdate(query);
+        }else{
+            String query = "Insert into User (username,name,email,isSetProfilePic,isGroup) values ('"+user.userName+"','"+user.name+"','"+user.email+"',0,1)";
+            DBupdate(query);
+        }
+    }
+
     public void storeMessage(Message message){
         String query="insert into Messages values('"+message.sender+"','"+message.receiver+"','"+message.text+"',datetime())";
         DBupdate(query);

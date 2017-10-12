@@ -193,15 +193,16 @@ public class ReceivingThread implements Runnable {
                         Thread t = new Thread(sendingThread);
                         t.start();
                     } else {
-                        p.operation = "response";
+                        p.operation = "createGroupResponse";
                         p.flag = true;
                         createGroup(p.string1, p.string2, p.string1);
                         SendingThread sendingThread = new SendingThread(Server.socketMap.get(p.string2), p);
                         Thread t = new Thread(sendingThread);
                         t.start();
                     }
-                }
-                else if(p.operation.equals("inviteGroup")){
+                }else if(p.operation.equals("createGroupResponse")){
+                    controller.createGroupResponse(p);
+                }else if(p.operation.equals("inviteGroup")){
                       
                 }
             }
